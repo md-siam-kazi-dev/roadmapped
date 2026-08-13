@@ -1,0 +1,36 @@
+/*
+ * DESIGN.md §2.1 — Color tokens
+ * Theme is driven by `data-theme="light" | "dark"` on <html> (DESIGN.md §4).
+ * `:root, [data-theme="light"]` is the default/light values; `[data-theme="dark"]`
+ * overrides for dark. `--action` (#8E977D) is intentionally identical in both themes.
+ */
+:root,
+[data-theme="light"] {
+  --bg: #ffffff; /* Page background (true white per brief) */
+  --surface: #f6f6f3; /* Cards, panels, raised surfaces */
+  --border: #e4e4de; /* Hairlines, dividers, node connectors */
+  --text-primary: #14140f; /* Headings, primary copy */
+  --text-muted: #5d5d54; /* Secondary copy, captions */
+  --action: #8e977d; /* Primary button (brief-specified, constant across themes) */
+  --action-hover: #767f67; /* Button hover/active */
+  --action-fg: #ffffff; /* Text/icon on action color */
+  --ember: #c97b4a; /* Streak flame, "at risk" countdown state */
+  --gem: #4e8b8b; /* Gem balance, reward moments (teal, deliberately not gold) */
+  --danger: #b5544a; /* Missed deadline, rejected assignment */
+  --success: #5c8a5c; /* Passed quiz, approved assignment */
+}
+
+[data-theme="dark"] {
+  --bg: #0a0a0a; /* Page background (near-black per brief) */
+  --surface: #161613; /* Cards, panels, raised surfaces */
+  --border: #e5e7eb; /* Hairlines, dividers, node connectors — gray-200 */
+  --text-primary: #f2f1ec; /* Headings, primary copy */
+  --text-muted: #a3a399; /* Secondary copy, captions */
+  --action: #8e977d; /* Primary button (constant across themes) */
+  --action-hover: #a3ac91; /* Button hover/active */
+  --action-fg: #0a0a0a; /* Text/icon on action color */
+  --ember: #e08f5c; /* Streak flame, "at risk" countdown state */
+  --gem: #63a6a6; /* Gem balance, reward moments */
+  --danger: #cc6e63; /* Missed deadline, rejected assignment */
+  --success: #78a878; /* Passed quiz, approved assignment */
+}

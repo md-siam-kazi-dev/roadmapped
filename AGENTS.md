@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-**Product name roadmaped:** Roadmap — a structured, streak-driven learning platform where free YouTube content is organized into ordered courses, unlocked one module a day.
+**Product name roadmapped:** Roadmap — a structured, streak-driven learning platform where free YouTube content is organized into ordered courses, unlocked one module a day.
 
 **Problem statement:** Free video tutorials exist everywhere, but learners rarely finish them. Without structure, deadlines, or accountability, courses get abandoned halfway. This product turns scattered YouTube resources into a guided, gamified curriculum with daily pacing, so learners build a real completion habit instead of a bookmarks graveyard.
 
