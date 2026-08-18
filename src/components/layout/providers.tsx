@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import * as React from "react";
 
+import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { makeQueryClient } from "@/lib/query/query-client";
 
@@ -30,6 +31,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <TooltipProvider delayDuration={0}>
         <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
       </TooltipProvider>
+      <Toaster position="top-center" />
     </ThemeProvider>
   );
 }

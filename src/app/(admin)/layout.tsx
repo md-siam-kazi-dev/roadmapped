@@ -1,15 +1,33 @@
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 
+import { getServerSession } from "@/lib/auth/server-session";
+
 /**
- * Role-guarded admin console shell — ARCHITECTURE.md §3 `(admin)/layout.tsx`.
+ * Role-guarded admin shell — ARCHITECTURE.md §3 `(admin)/layout.tsx`,
+ * ARCHITECTURE.md §4 step 5.
  *
- * - Route protection (ADMIN / INSTRUCTOR) is enforced in `proxy.ts` (Phase 3).
- * - `users/` and the full cross-course `submissions/` queue are ADMIN-only —
- *   `use-role-guard.ts` (Phase 4) redirects INSTRUCTOR sessions away from them.
- * - The console sidebar (Categories/Courses/Users/Submissions) lands in Phase 5.
- * - The shared navbar (Header) is rendered in the root layout.
+ * - `proxy.ts` gates session presence for `/console/*` and `/admin/*`.
+ * - This layout gates the role server-side: only ADMIN / INSTRUCTOR may enter.
+ *   Anyone who manually enters an admin URL without the right role is sent
+ *   straight to the homepage.
+ * - `/admin/*` (the full admin dashboard) is additionally ADMIN-only — enforced
+ *   in `admin/dashboard/layout.tsx` (client-side guard for in-app nav).
  */
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  const headerList = await headers();
+  const session = await getServerSession(headerList);
+  const role = session?.user?.role;
+
+  if (role !== "ADMIN" && role !== "INSTRUCTOR") {
+    redirect("/");
+  }
+
   return (
     <div className="flex flex-1 flex-col">
       <div className="flex flex-1 flex-col">{children}</div>

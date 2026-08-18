@@ -15,12 +15,15 @@ import { type NextRequest, NextResponse } from "next/server";
  */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
   const sessionCookie = getSessionCookie(request);
 
   if (!sessionCookie) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("next", pathname);
+    // Manual access to admin routes is nudged to the homepage — no hint where
+    // the console lives. Other protected routes go to login with a return path.
+    url.pathname = isAdminPath ? "/" : "/login";
+    if (!isAdminPath) url.searchParams.set("next", pathname);
     return NextResponse.redirect(url);
   }
 
@@ -29,6 +32,13 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   // Route groups are URL-invisible: (learner)/dashboard → /dashboard,
-  // (admin)/console/... → /console/... . Match those concrete paths.
-  matcher: ["/dashboard/:path*", "/learn/:path*", "/console/:path*"],
+  // (admin)/console/... → /console/..., (admin)/admin/dashboard/... → /admin/... .
+  // Match those concrete paths.
+  matcher: [
+    "/dashboard/:path*",
+    "/learn/:path*",
+    "/console/:path*",
+    "/mycourse/:path*",
+    "/admin/:path*",
+  ],
 };

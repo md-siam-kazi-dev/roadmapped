@@ -81,7 +81,6 @@
   --accent-foreground: var(--text-primary);
   --destructive: var(--danger);
   --destructive-foreground: #ffffff;
-  --border: var(--border);
   --input: var(--border);
   --ring: var(--action);
   --sidebar: var(--surface);
@@ -115,7 +114,6 @@
   --accent-foreground: var(--text-primary);
   --destructive: var(--danger);
   --destructive-foreground: #0a0a0a;
-  --border: var(--border);
   --input: var(--border);
   --ring: var(--action);
   --sidebar: var(--surface);
@@ -144,3 +142,134 @@
     @apply font-sans;
   }
 }
+
+/* DESIGN.md §3 — loading states: skeleton shimmer, never spinners. */
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.animate-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in srgb, var(--text-primary) 6%, transparent),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-shimmer::after {
+    animation: none;
+  }
+}
+
+/* ── Tiptap rich text editor (MS Word-style) ── */
+.tiptap-wrap .tiptap {
+  min-height: 180px;
+}
+
+.tiptap-wrap .tiptap:focus {
+  outline: none;
+}
+
+.tiptap-wrap .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: var(--text-muted);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.tiptap-wrap .tiptap h1,
+.tiptap-wrap .tiptap h2,
+.tiptap-wrap .tiptap h3,
+.tiptap-wrap .tiptap h4,
+.tiptap-wrap .tiptap h5,
+.tiptap-wrap .tiptap h6 {
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-top: 0.75em;
+  margin-bottom: 0.35em;
+}
+
+.tiptap-wrap .tiptap h1 { font-size: 1.5rem; }
+.tiptap-wrap .tiptap h2 { font-size: 1.25rem; }
+.tiptap-wrap .tiptap h3 { font-size: 1.125rem; }
+.tiptap-wrap .tiptap h4 { font-size: 1rem; }
+.tiptap-wrap .tiptap h5 { font-size: 0.875rem; }
+.tiptap-wrap .tiptap h6 { font-size: 0.8125rem; color: var(--text-muted); }
+
+.tiptap-wrap .tiptap p {
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin: 0.4em 0;
+}
+
+.tiptap-wrap .tiptap ul,
+.tiptap-wrap .tiptap ol {
+  padding-left: 1.5rem;
+  margin: 0.4em 0;
+  color: var(--text-primary);
+}
+
+.tiptap-wrap .tiptap ul { list-style: disc; }
+.tiptap-wrap .tiptap ol { list-style: decimal; }
+.tiptap-wrap .tiptap li::marker { color: var(--action); }
+
+.tiptap-wrap .tiptap blockquote {
+  border-left: 3px solid var(--action);
+  padding-left: 1rem;
+  margin: 0.5em 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.tiptap-wrap .tiptap code {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.375rem;
+  padding: 0.1em 0.35em;
+  font-family: var(--font-plex-mono);
+  font-size: 0.85em;
+  color: var(--ember);
+}
+
+.tiptap-wrap .tiptap pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  overflow-x: auto;
+  margin: 0.5em 0;
+}
+
+.tiptap-wrap .tiptap pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--text-primary);
+}
+
+.tiptap-wrap .tiptap hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1em 0;
+}
+
+.tiptap-wrap .tiptap strong { font-weight: 700; color: var(--text-primary); }
+.tiptap-wrap .tiptap em { font-style: italic; }
+.tiptap-wrap .tiptap s { text-decoration: line-through; color: var(--text-muted); }
