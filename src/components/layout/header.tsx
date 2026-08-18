@@ -50,7 +50,8 @@ export function Header() {
   const name = user?.name ?? "";
   const email = user?.email ?? "";
   const image = user?.image ?? null;
-  const role = (user as { role?: string } | null)?.role ?? "LEARNER";
+  const rawRole = (user as { role?: string } | null)?.role ?? "LEARNER";
+  const role = rawRole.toUpperCase() as "ADMIN" | "INSTRUCTOR" | "LEARNER";
   const isAdmin = role === "ADMIN" || role === "INSTRUCTOR";
 
   const initials = name

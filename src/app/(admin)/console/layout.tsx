@@ -1,32 +1,35 @@
-import { BookOpen, FolderTree, Inbox, Users } from "lucide-react";
 import type { ReactNode } from "react";
 
-const nav = [
-  { href: "/console/courses", label: "Courses", icon: BookOpen },
-  { href: "/console/categories", label: "Categories", icon: FolderTree },
-  { href: "/console/users", label: "Users", icon: Users },
-  { href: "/console/submissions", label: "Submissions", icon: Inbox },
-];
+import { ConsoleSidebarContent } from "@/components/admin/console-sidebar-content";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
+/**
+ * Console layout — shadcn sidebar shell (responsive), same pattern as the
+ * admin dashboard and learner shell.
+ *
+ * Desktop (md+): a collapsible (icon-rail) persistent sidebar.
+ * Mobile (<md): the same nav becomes a Sheet sidebar opened via the
+ * SidebarTrigger in the inset header.
+ *
+ * Role guard (ADMIN / INSTRUCTOR) is enforced server-side by the parent
+ * `(admin)/layout.tsx`.
+ */
 export default function ConsoleLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex flex-1">
-      <aside className="hidden w-60 shrink-0 border-r border-border p-4 md:flex md:flex-col">
-        <p className="px-2 font-display text-lg font-semibold text-foreground">Console</p>
-        <nav className="mt-6 flex flex-col gap-1">
-          {nav.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="flex items-center gap-3 rounded-md px-2 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            >
-              <item.icon className="size-4" />
-              {item.label}
-            </a>
-          ))}
-        </nav>
-      </aside>
-      <main className="flex-1 p-4 sm:p-6">{children}</main>
-    </div>
+    <SidebarProvider>
+      <ConsoleSidebarContent />
+      <SidebarInset className="min-h-[calc(100vh-3.5rem)]">
+        <header className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
+          <SidebarTrigger />
+          <Separator orientation="vertical" className="mr-2 h-4" />
+        </header>
+        <div className="flex flex-1 flex-col p-4 sm:p-6">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 }

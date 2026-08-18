@@ -38,7 +38,12 @@ export async function getServerSession(
 
   const { session, user } = result;
 
-  const role = (user as { role?: UserRole }).role ?? "LEARNER";
+  // Normalize to the canonical uppercase role so server-side guards can compare
+  // against "ADMIN" / "INSTRUCTOR" regardless of how the role is stored in the
+  // DB (Better Auth's default is lowercase `"user"`; the console may set
+  // `"admin"` / `"instructor"`).
+  const rawRole = (user as { role?: string }).role;
+  const role = (rawRole ? rawRole.toUpperCase() : "LEARNER") as UserRole;
 
   return {
     user: {
